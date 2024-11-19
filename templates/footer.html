@@ -1,0 +1,136 @@
+<footer class="footer">
+  <div class="container py-4">
+    <div class="row py-5">
+      <!-- Customer Services -->
+      <div class="col-md-4 mb-3 mb-md-0">
+        <h6 class="text-uppercase mb-4">Services client</h6>
+        <ul class="list-unstyled mb-0">
+          <li><a class="footer-link" href="#">Aide &amp; Contactez-nous</a></li>
+          <li><a class="footer-link" href="#">Retours &amp; Remboursements</a></li>
+          <li><a class="footer-link" href="#">Magasins en ligne</a></li>
+          <li><a class="footer-link" href="#">Conditions générales</a></li>
+        </ul>
+      </div>
+      <!-- Company -->
+      <div class="col-md-4 mb-3 mb-md-0">
+        <h6 class="text-uppercase mb-4">Entreprise</h6>
+        <ul class="list-unstyled mb-0">
+          <li><a class="footer-link" href="#">Ce que nous faisons</a></li>
+          <li><a class="footer-link" href="#">Services disponibles</a></li>
+          <li><a class="footer-link" href="#">Derniers articles</a></li>
+          <li><a class="footer-link" href="#">FAQ</a></li>
+        </ul>
+      </div>
+      <!-- Social Media -->
+      <div class="col-md-4">
+        <h6 class="text-uppercase mb-4">Réseaux sociaux</h6>
+        <ul class="list-unstyled mb-0 d-flex justify-content-start">
+          <li><a class="social-link" href="#"><i class="fab fa-twitter"></i></a></li>
+          <li><a class="social-link" href="#"><i class="fab fa-instagram"></i></a></li>
+          <li><a class="social-link" href="#"><i class="fab fa-tumblr"></i></a></li>
+          <li><a class="social-link" href="#"><i class="fab fa-pinterest"></i></a></li>
+        </ul>
+      </div>
+    </div>
+    <!-- Footer Bottom -->
+    <div class="border-top pt-4" style="border-color: #333 !important">
+      <div class="row">
+        <div class="col-lg-6">
+          <p class="small text-muted mb-0">&copy; 2024 Tous droits réservés.</p>
+        </div>
+        <div class="col-lg-6 text-lg-right">
+          <p class="small text-muted mb-0">Site web par <a class="text-white reset-anchor" href="https://www.github.com" target="_blank">Takuma</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background-color: #222;
+    color: #fff;
+    padding: 50px 0;
+    position: relative;
+  }
+
+  .footer h6 {
+    color: #f8f9fa;
+    font-weight: bold;
+    letter-spacing: 1px;
+    position: relative;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+
+  .footer-link {
+    color: #bfbfbf;
+    display: inline-block;
+    margin-bottom: 10px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .footer-link:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .footer-link::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #fff;
+    transition: width 0.3s;
+    margin-top: 5px;
+  }
+
+  .footer-link:hover::after {
+    width: 100%;
+  }
+
+  .social-link {
+    color: #bfbfbf;
+    font-size: 20px;
+    margin-right: 15px;
+    transition: all 0.3s ease;
+  }
+
+  .social-link:hover {
+    color: #fff;
+  }
+
+  .social-link i {
+    transition: transform 0.3s;
+  }
+
+  .social-link:hover i {
+    transform: scale(1.2);
+  }
+
+  .footer .border-top {
+    border-color: #444 !important;
+  }
+
+  .reset-anchor {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .reset-anchor:hover {
+    color: #0056b3;
+  }
+
+  @media (max-width: 768px) {
+    .footer h6 {
+      font-size: 14px;
+    }
+
+    .social-link {
+      font-size: 18px;
+    }
+  }
+</style>

@@ -1,0 +1,51 @@
+/* your styles go here */
+
+
+.tracking-widest {
+    letter-spacing: 0.5em;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Pour assurer que l'image couvre bien l'espace */
+  .object-fit-cover {
+    object-fit: cover;
+  }
+
+  /* Déclaration de la police Berdiola */
+  @font-face {
+    font-family: 'Berdiola';
+    src: url('{% static "fonts/berdiola.otf" %}') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  /* Classe utilisant la police Berdiola */
+  .coursive-text {
+    font-family: 'Berdiola', sans-serif;
+    font-size: 5rem;
+  }
+  
+  .tracking-widest {
+    letter-spacing: 0.5em;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .object-fit-cover {
+    object-fit: cover;
+  }

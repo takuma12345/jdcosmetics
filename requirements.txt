@@ -1,0 +1,6 @@
+asgiref
+Django
+Pillow
+pytz
+sqlparse
+django-cors-headers

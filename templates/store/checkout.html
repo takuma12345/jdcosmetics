@@ -1,0 +1,345 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <!-- SECTION PRINCIPALE -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="h2 text-uppercase mb-0">Passer à la caisse</h1>
+                </div>
+                <div class="col-lg-6 text-lg-right">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-lg-end mb-0 px-0">
+                            <li class="breadcrumb-item"><a href="{% url 'store:home' %}">Accueil</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'store:cart' %}">Panier</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Passer à la caisse</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<section>
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="box-element border rounded p-4" id="form-wrapper">
+            <form action="" id="form" class="needs-validation" novalidate>
+                {% csrf_token %}
+
+                <!-- Informations Personnelles -->
+                <div id="user-info">
+                    <h5 class="mb-3">Informations Personnelles:</h5>
+
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="name" placeholder="Nom..." required>
+                        <div class="invalid-feedback">Veuillez entrer votre nom.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="username" placeholder="Prénom..." required>
+                        <div class="invalid-feedback">Veuillez entrer votre prénom.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="phone" placeholder="Tel..." required>
+                        <div class="invalid-feedback">Veuillez entrer un numéro de téléphone valide.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="email" class="form-control" name="email" placeholder="Email..." required>
+                        <div class="invalid-feedback">Veuillez entrer une adresse email valide.</div>
+                    </div>
+                </div>
+
+                <!-- Informations d'Expédition -->
+                <div id="shipping-info" class="mt-4">
+                    <hr>
+                    <h5 class="mb-3">Informations d'Expédition:</h5>
+
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="address" placeholder="Adresse..." required>
+                        <div class="invalid-feedback">Veuillez entrer votre adresse.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="city" placeholder="Ville..." required>
+                        <div class="invalid-feedback">Veuillez entrer votre ville.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="state" placeholder="Pays..." required>
+                        <div class="invalid-feedback">Veuillez entrer votre pays.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="zipcode" placeholder="Code postal..." required>
+                        <div class="invalid-feedback">Veuillez entrer votre code postal.</div>
+                    </div>
+                </div>
+
+                <hr>
+                <button id="form-button" class="btn btn-success btn-block w-100 mt-3" type="submit">Continuer</button>
+            </form>
+        </div>
+
+        <!-- Section de paiement -->
+        <div class="box-element border rounded p-4 mt-4" id="payment-info">
+            <small>Veuillez choisir le mode de paiement</small>
+            <div class="text-center my-3 bg-info rounded">
+                <button onclick="checkout()" class="btn btn-light w-100 py-2">
+                    <img class="row-image" src="{% static 'img/cinet.png' %}" alt="Mode de paiement">
+                </button>
+            </div>
+            <div id="paypal-button-container"></div>
+        </div>
+    </div>
+
+    <!-- Récapitulatif de la commande -->
+    <div class="col-lg-7">
+    <div class="box-element border rounded p-4 shadow-sm">
+        <a class="btn btn-outline-dark mb-3" href="{% url 'store:cart' %}">
+            &#x2190; Retour au panier
+        </a>
+
+        <h4 class="mb-4 text-center">Récapitulatif de la commande</h4>
+
+        {% for item in items %}
+            <div class="card mb-3 border-0 shadow-sm">
+                <div class="row g-0 align-items-center">
+                    <div class="col-md-3">
+                        <img src="{{ item.product.product_image.url }}" class="img-fluid rounded-start" alt="{{ item.product.name }}">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body py-2">
+                            <h5 class="card-title mb-1">{{ item.product.name }}</h5>
+                            <p class="card-text">
+                                <small class="text-muted">Quantité : {{ item.quantity }}</small>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <div class="card-body py-2">
+                            <p class="card-text mb-1"><strong>{{ item.product.price }} XAF</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="mt-4 p-3 border-top">
+            <h5 class="d-flex justify-content-between">
+                <span>Total articles :</span>
+                <span><span class="badge bg-secondary">{{ total_products }}</span></span>
+            </h5>
+            <h5 class="d-flex justify-content-between">
+                <span>Total :</span>
+                <span><strong>{{ total_price }} XAF</strong></span>
+            </h5>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- Bootstrap JS (si nécessaire) -->
+<script>
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            var forms = document.getElementsByClassName('needs-validation');
+            Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+
+ <!-- Include the PayPal JavaScript SDK -->
+ <script src="https://www.paypal.com/sdk/js?client-id=AZ0eZylbqLFaIEyWfH74MMFdCYRiR9PgIVKXjJiReDinExGn6ugJD1qFPge5bT_doUFj3Fu8Eil0DvPJ&currency=USD"></script>
+
+ <script>
+     var total = parseFloat('{{total_price}}').toFixed(2);
+     // Render the PayPal button into #paypal-button-container
+     paypal.Buttons({
+
+         style:{
+            color: 'blue',
+            shape: 'rect',
+         },
+         // Set up the transaction
+         createOrder: function(data, actions) {
+             return actions.order.create({
+                 purchase_units: [{
+                     amount: {
+                         value: total
+                     }
+                 }]
+             });
+         },
+
+         // Finalize the transaction
+         onApprove: function(data, actions) {
+             return actions.order.capture().then(function(orderData) {
+                 // Successful capture! For demo purposes:
+                 console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                 var transaction = orderData.purchase_units[0].payments.captures[0];
+
+                 submitFormData(transaction.id, transaction.status);
+
+                 // Replace the above to show a success message within this page, e.g.
+                 // const element = document.getElementById('paypal-button-container');
+                 // element.innerHTML = '';
+                 // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                 // Or go to another URL:  actions.redirect('thank_you.html');
+             });
+         }
+
+
+     }).render('#paypal-button-container');
+ </script>
+
+ <script>
+    function checkout() {
+        CinetPay.setConfig({
+            apikey: '17754041067314c2c30c697.32433619',//   YOUR APIKEY
+            site_id: '5882873',//YOUR_SITE_ID
+            notify_url: 'http://mondomaine.com/notify/',
+            mode: 'TEST'
+        });
+        CinetPay.getCheckout({
+            transaction_id: Math.floor(Math.random() * 100000000).toString(), // YOUR TRANSACTION ID
+            amount: total * 650,
+            currency: 'XAF',
+            channels: 'ALL',
+            description: 'Test de paiement',
+
+        });
+        CinetPay.waitResponse(function(data) {
+
+            submitFormData(data.operator_id, data.status);
+            $("#cp_modal_first_parent").hide();
+
+        });
+        CinetPay.onError(function(data) {
+            console.log(data);
+        });
+    }
+</script>
+
+<script type="text/javascript">
+
+    var produitPhysique = '{{commande.produit_physique}}';
+
+    var total = parseFloat('{{commande.get_panier_total}}').toFixed(2);
+
+
+    if( produitPhysique === 'False'){
+        document.getElementById('shipping-info').innerHTML = '';
+    }
+
+    if ( user != "AnonymousUser"){
+        document.getElementById('user-info').innerHTML = '';
+    }
+
+    if ( produitPhysique == "False" && user != "AnonymousUser"){
+        document.getElementById('form-wrapper').classList.add('hidden');
+        document.getElementById('payment-info').classList.remove('hidden');
+
+    }
+
+    form = document.getElementById('form');
+    csrftoken = form.getElementsByTagName('input')[0].value
+    console.log('neauveau token', csrftoken);
+
+    form.addEventListener('submit', function(e){
+        e.preventDefault();
+        console.log('envoi des donnee ....');
+        document.getElementById('form-button').classList.add('hidden');
+        document.getElementById('payment-info').classList.remove('hidden');
+    })
+
+    // document.getElementById('make-payment').addEventListener('click', function(e){
+    //     submitFormData();
+    // })
+
+    function submitFormData(transactionId, status){
+
+        var paymentInfo = {
+            'transaction_id': transactionId,
+            'status': status
+        }
+
+        var userFormData = {
+            'name':null,
+            'username':null,
+            'phone': null,
+            'email': null,
+            'total': total,
+        }
+
+        var shippingUserInfo = {
+            'address':null,
+            'city':null,
+            'state':null,
+            'zipcode':null,
+        }
+
+        if (produitPhysique != "False"){
+            shippingUserInfo.address = form.address.value;
+            shippingUserInfo.city = form.city.value;
+            shippingUserInfo.state = form.state.value;
+            shippingUserInfo.zipcode = form.zipcode.value;
+        }
+
+        if (user == "AnonymousUser"){
+            userFormData.name = form.name.value;
+            userFormData.username = form.username.value;
+            userFormData.phone = form.phone.value;
+            userFormData.email = form.email.value;
+
+            console.log(userFormData);
+        }
+
+        var url = '/traitement-commande/';
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            },
+            body: JSON.stringify({"form": userFormData, "shipping": shippingUserInfo, 'payment_info': paymentInfo})
+        })
+
+        .then((response) => {
+            return response.json();
+        })
+
+        .then((data) => {
+            console.log('data', data);
+            //alert(data);
+            $("#cp_modal_first_parent").hide();
+            Swal.fire({icon:'info',text:data}).then(result => {
+                window.location.href = "{% url 'store:home' %}";
+            });
+            panier = {};
+            document.cookie = "panier=" + JSON.stringify(panier) + ";domain=;path=/";
+        })
+    }
+</script>
+
+
+{% endblock %}
+</section>
